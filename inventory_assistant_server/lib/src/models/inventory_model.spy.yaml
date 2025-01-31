@@ -1,0 +1,8 @@
+class: Products 
+table: products_tbl
+
+fields:
+    productName: String
+    price: double
+    avlQty: int
+    tax: int 

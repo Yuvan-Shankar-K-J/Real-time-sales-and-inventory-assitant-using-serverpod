@@ -1,0 +1,7 @@
+example:
+  - hello:
+inventory:
+  - fetchProducts:
+  - addProduct:
+  - updateProduct:
+  - deleteProduct:

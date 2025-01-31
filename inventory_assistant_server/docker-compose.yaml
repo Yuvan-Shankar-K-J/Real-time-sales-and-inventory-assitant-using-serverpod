@@ -1,0 +1,54 @@
+services:
+  # Development services
+  postgres:
+    image: postgres:16.3
+    ports:
+      - '8090:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: inventory_assistant
+      POSTGRES_PASSWORD: "ogGWPiYNGxplmPWrgNxbOsGKF4wiUa3k"
+    volumes:
+      - inventory_assistant_data:/var/lib/postgresql/data
+    profiles:
+      - '' # Default profile
+      - dev
+  redis:
+    image: redis:6.2.6
+    ports:
+      - '8091:6379'
+    command: redis-server --requirepass "FE55z-VSjzZX-ah1zQX9wv7pcs5Uai3d"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    profiles:
+      - '' # Default profile
+      - dev
+
+  # Test services
+  postgres_test:
+    image: postgres:16.3
+    ports:
+      - '9090:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: inventory_assistant_test
+      POSTGRES_PASSWORD: "6Fq4kYMfNWqtJQGrm9rxcubQW2EoIpGq"
+    volumes:
+      - inventory_assistant_test_data:/var/lib/postgresql/data
+    profiles:
+      - '' # Default profile
+      - test
+  redis_test:
+    image: redis:6.2.6
+    ports:
+      - '9091:6379'
+    command: redis-server --requirepass "5xtcLVtB1pueVrCueOUTaSHThOVvOTfL"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    profiles:
+      - '' # Default profile
+      - test
+
+volumes:
+  inventory_assistant_data:
+  inventory_assistant_test_data:
