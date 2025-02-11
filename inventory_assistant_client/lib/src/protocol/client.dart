@@ -13,7 +13,9 @@ import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'dart:async' as _i2;
 import 'package:inventory_assistant_client/src/protocol/inventory_model.dart'
     as _i3;
-import 'protocol.dart' as _i4;
+import 'package:inventory_assistant_client/src/protocol/party_model.dart'
+    as _i4;
+import 'protocol.dart' as _i5;
 
 /// {@category Endpoint}
 class EndpointExample extends _i1.EndpointRef {
@@ -64,6 +66,41 @@ class EndpointInventory extends _i1.EndpointRef {
       );
 }
 
+/// {@category Endpoint}
+class EndpointParty extends _i1.EndpointRef {
+  EndpointParty(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'party';
+
+  _i2.Future<List<_i4.Parties>> fetchParties({String? searchQuery}) =>
+      caller.callServerEndpoint<List<_i4.Parties>>(
+        'party',
+        'fetchParties',
+        {'searchQuery': searchQuery},
+      );
+
+  _i2.Future<bool> addParty(_i4.Parties parties) =>
+      caller.callServerEndpoint<bool>(
+        'party',
+        'addParty',
+        {'parties': parties},
+      );
+
+  _i2.Future<bool> updateParty(_i4.Parties parties) =>
+      caller.callServerEndpoint<bool>(
+        'party',
+        'updateParty',
+        {'parties': parties},
+      );
+
+  _i2.Future<bool> deleteParty(int id) => caller.callServerEndpoint<bool>(
+        'party',
+        'deleteParty',
+        {'id': id},
+      );
+}
+
 class Client extends _i1.ServerpodClientShared {
   Client(
     String host, {
@@ -80,7 +117,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
           host,
-          _i4.Protocol(),
+          _i5.Protocol(),
           securityContext: securityContext,
           authenticationKeyManager: authenticationKeyManager,
           streamingConnectionTimeout: streamingConnectionTimeout,
@@ -92,16 +129,20 @@ class Client extends _i1.ServerpodClientShared {
         ) {
     example = EndpointExample(this);
     inventory = EndpointInventory(this);
+    party = EndpointParty(this);
   }
 
   late final EndpointExample example;
 
   late final EndpointInventory inventory;
 
+  late final EndpointParty party;
+
   @override
   Map<String, _i1.EndpointRef> get endpointRefLookup => {
         'example': example,
         'inventory': inventory,
+        'party': party,
       };
 
   @override

@@ -12,10 +12,14 @@
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'example.dart' as _i2;
 import 'inventory_model.dart' as _i3;
+import 'party_model.dart' as _i4;
 import 'package:inventory_assistant_client/src/protocol/inventory_model.dart'
-    as _i4;
+    as _i5;
+import 'package:inventory_assistant_client/src/protocol/party_model.dart'
+    as _i6;
 export 'example.dart';
 export 'inventory_model.dart';
+export 'party_model.dart';
 export 'client.dart';
 
 class Protocol extends _i1.SerializationManager {
@@ -37,14 +41,24 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i3.Products) {
       return _i3.Products.fromJson(data) as T;
     }
+    if (t == _i4.Parties) {
+      return _i4.Parties.fromJson(data) as T;
+    }
     if (t == _i1.getType<_i2.Example?>()) {
       return (data != null ? _i2.Example.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<_i3.Products?>()) {
       return (data != null ? _i3.Products.fromJson(data) : null) as T;
     }
-    if (t == List<_i4.Products>) {
-      return (data as List).map((e) => deserialize<_i4.Products>(e)).toList()
+    if (t == _i1.getType<_i4.Parties?>()) {
+      return (data != null ? _i4.Parties.fromJson(data) : null) as T;
+    }
+    if (t == List<_i5.Products>) {
+      return (data as List).map((e) => deserialize<_i5.Products>(e)).toList()
+          as dynamic;
+    }
+    if (t == List<_i6.Parties>) {
+      return (data as List).map((e) => deserialize<_i6.Parties>(e)).toList()
           as dynamic;
     }
     return super.deserialize<T>(data, t);
@@ -60,6 +74,9 @@ class Protocol extends _i1.SerializationManager {
     if (data is _i3.Products) {
       return 'Products';
     }
+    if (data is _i4.Parties) {
+      return 'Parties';
+    }
     return null;
   }
 
@@ -74,6 +91,9 @@ class Protocol extends _i1.SerializationManager {
     }
     if (dataClassName == 'Products') {
       return deserialize<_i3.Products>(data['data']);
+    }
+    if (dataClassName == 'Parties') {
+      return deserialize<_i4.Parties>(data['data']);
     }
     return super.deserializeByClassName(data);
   }

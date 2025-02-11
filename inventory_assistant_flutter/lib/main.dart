@@ -9,7 +9,7 @@ import 'package:inventory_assistant_flutter/Pages/Inventory_Status/addToInventor
 import 'package:serverpod_flutter/serverpod_flutter.dart';
 // import '';
 // Sets up a singleton client object
-var client = Client('http://192.168.59.35:8080/')
+var client = Client('http://192.168.135.35:8080/')
   ..connectivityMonitor = FlutterConnectivityMonitor();
 
 void main() {

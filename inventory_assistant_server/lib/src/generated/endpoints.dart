@@ -12,8 +12,11 @@
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../endpoints/example_endpoint.dart' as _i2;
 import '../endpoints/inventory_endpoint.dart' as _i3;
+import '../endpoints/party_endpoint.dart' as _i4;
 import 'package:inventory_assistant_server/src/generated/inventory_model.dart'
-    as _i4;
+    as _i5;
+import 'package:inventory_assistant_server/src/generated/party_model.dart'
+    as _i6;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -29,6 +32,12 @@ class Endpoints extends _i1.EndpointDispatch {
         ..initialize(
           server,
           'inventory',
+          null,
+        ),
+      'party': _i4.PartyEndpoint()
+        ..initialize(
+          server,
+          'party',
           null,
         ),
     };
@@ -83,7 +92,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'products': _i1.ParameterDescription(
               name: 'products',
-              type: _i1.getType<_i4.Products>(),
+              type: _i1.getType<_i5.Products>(),
               nullable: false,
             )
           },
@@ -101,7 +110,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'products': _i1.ParameterDescription(
               name: 'products',
-              type: _i1.getType<_i4.Products>(),
+              type: _i1.getType<_i5.Products>(),
               nullable: false,
             )
           },
@@ -128,6 +137,84 @@ class Endpoints extends _i1.EndpointDispatch {
             Map<String, dynamic> params,
           ) async =>
               (endpoints['inventory'] as _i3.InventoryEndpoint).deleteProduct(
+            session,
+            params['id'],
+          ),
+        ),
+      },
+    );
+    connectors['party'] = _i1.EndpointConnector(
+      name: 'party',
+      endpoint: endpoints['party']!,
+      methodConnectors: {
+        'fetchParties': _i1.MethodConnector(
+          name: 'fetchParties',
+          params: {
+            'searchQuery': _i1.ParameterDescription(
+              name: 'searchQuery',
+              type: _i1.getType<String?>(),
+              nullable: true,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['party'] as _i4.PartyEndpoint).fetchParties(
+            session,
+            searchQuery: params['searchQuery'],
+          ),
+        ),
+        'addParty': _i1.MethodConnector(
+          name: 'addParty',
+          params: {
+            'parties': _i1.ParameterDescription(
+              name: 'parties',
+              type: _i1.getType<_i6.Parties>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['party'] as _i4.PartyEndpoint).addParty(
+            session,
+            params['parties'],
+          ),
+        ),
+        'updateParty': _i1.MethodConnector(
+          name: 'updateParty',
+          params: {
+            'parties': _i1.ParameterDescription(
+              name: 'parties',
+              type: _i1.getType<_i6.Parties>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['party'] as _i4.PartyEndpoint).updateParty(
+            session,
+            params['parties'],
+          ),
+        ),
+        'deleteParty': _i1.MethodConnector(
+          name: 'deleteParty',
+          params: {
+            'id': _i1.ParameterDescription(
+              name: 'id',
+              type: _i1.getType<int>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['party'] as _i4.PartyEndpoint).deleteParty(
             session,
             params['id'],
           ),

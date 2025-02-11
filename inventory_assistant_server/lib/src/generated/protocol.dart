@@ -13,10 +13,14 @@ import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod/protocol.dart' as _i2;
 import 'example.dart' as _i3;
 import 'inventory_model.dart' as _i4;
+import 'party_model.dart' as _i5;
 import 'package:inventory_assistant_server/src/generated/inventory_model.dart'
-    as _i5;
+    as _i6;
+import 'package:inventory_assistant_server/src/generated/party_model.dart'
+    as _i7;
 export 'example.dart';
 export 'inventory_model.dart';
+export 'party_model.dart';
 
 class Protocol extends _i1.SerializationManagerServer {
   Protocol._();
@@ -26,6 +30,68 @@ class Protocol extends _i1.SerializationManagerServer {
   static final Protocol _instance = Protocol._();
 
   static final List<_i2.TableDefinition> targetTableDefinitions = [
+    _i2.TableDefinition(
+      name: 'parties_tbl',
+      dartName: 'Parties',
+      schema: 'public',
+      module: 'inventory_assistant',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'parties_tbl_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'partyName',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'gstin',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'telephoneNumber',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'mobileNumber',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'address',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+      ],
+      foreignKeys: [],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'parties_tbl_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        )
+      ],
+      managed: true,
+    ),
     _i2.TableDefinition(
       name: 'products_tbl',
       dartName: 'Products',
@@ -97,14 +163,24 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i4.Products) {
       return _i4.Products.fromJson(data) as T;
     }
+    if (t == _i5.Parties) {
+      return _i5.Parties.fromJson(data) as T;
+    }
     if (t == _i1.getType<_i3.Example?>()) {
       return (data != null ? _i3.Example.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<_i4.Products?>()) {
       return (data != null ? _i4.Products.fromJson(data) : null) as T;
     }
-    if (t == List<_i5.Products>) {
-      return (data as List).map((e) => deserialize<_i5.Products>(e)).toList()
+    if (t == _i1.getType<_i5.Parties?>()) {
+      return (data != null ? _i5.Parties.fromJson(data) : null) as T;
+    }
+    if (t == List<_i6.Products>) {
+      return (data as List).map((e) => deserialize<_i6.Products>(e)).toList()
+          as dynamic;
+    }
+    if (t == List<_i7.Parties>) {
+      return (data as List).map((e) => deserialize<_i7.Parties>(e)).toList()
           as dynamic;
     }
     try {
@@ -122,6 +198,9 @@ class Protocol extends _i1.SerializationManagerServer {
     }
     if (data is _i4.Products) {
       return 'Products';
+    }
+    if (data is _i5.Parties) {
+      return 'Parties';
     }
     className = _i2.Protocol().getClassNameForObject(data);
     if (className != null) {
@@ -142,6 +221,9 @@ class Protocol extends _i1.SerializationManagerServer {
     if (dataClassName == 'Products') {
       return deserialize<_i4.Products>(data['data']);
     }
+    if (dataClassName == 'Parties') {
+      return deserialize<_i5.Parties>(data['data']);
+    }
     if (dataClassName.startsWith('serverpod.')) {
       data['className'] = dataClassName.substring(10);
       return _i2.Protocol().deserializeByClassName(data);
@@ -160,6 +242,8 @@ class Protocol extends _i1.SerializationManagerServer {
     switch (t) {
       case _i4.Products:
         return _i4.Products.t;
+      case _i5.Parties:
+        return _i5.Parties.t;
     }
     return null;
   }

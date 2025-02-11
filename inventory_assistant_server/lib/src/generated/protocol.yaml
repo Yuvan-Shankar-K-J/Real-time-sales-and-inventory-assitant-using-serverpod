@@ -5,3 +5,8 @@ inventory:
   - addProduct:
   - updateProduct:
   - deleteProduct:
+party:
+  - fetchParties:
+  - addParty:
+  - updateParty:
+  - deleteParty:

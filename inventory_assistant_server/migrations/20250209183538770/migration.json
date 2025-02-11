@@ -1,0 +1,84 @@
+{
+  "actions": [
+    {
+      "type": "deleteTable",
+      "deleteTable": "parties_tbl"
+    },
+    {
+      "type": "createTable",
+      "createTable": {
+        "name": "parties_tbl",
+        "dartName": "Parties",
+        "module": "inventory_assistant",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "nextval('parties_tbl_id_seq'::regclass)",
+            "dartType": "int?"
+          },
+          {
+            "name": "partyName",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "gstin",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "telephoneNumber",
+            "columnType": 0,
+            "isNullable": true,
+            "dartType": "String?"
+          },
+          {
+            "name": "mobileNumber",
+            "columnType": 0,
+            "isNullable": true,
+            "dartType": "String?"
+          },
+          {
+            "name": "address",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          }
+        ],
+        "foreignKeys": [],
+        "indexes": [
+          {
+            "indexName": "parties_tbl_pkey",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "id"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": true
+          }
+        ],
+        "managed": true
+      }
+    }
+  ],
+  "warnings": [
+    {
+      "type": "tableDropped",
+      "message": "One or more columns are added to table \"parties_tbl\" which cannot be added in a table migration. The complete table will be deleted and recreated.",
+      "table": "parties_tbl",
+      "columns": [
+        "address"
+      ],
+      "destrucive": true
+    }
+  ],
+  "migrationApiVersion": 1
+}

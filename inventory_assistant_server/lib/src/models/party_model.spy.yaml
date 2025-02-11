@@ -1,0 +1,9 @@
+class: Parties
+table: parties_tbl
+
+fields:
+  partyName: String
+  gstin:  String
+  telephoneNumber: String?
+  mobileNumber: String?
+  address: String

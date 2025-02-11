@@ -1,5 +1,5 @@
-import 'package:inventory_assistant_client/inventory_assistant_client.dart';
 import 'package:flutter/material.dart';
+import 'package:inventory_assistant_client/inventory_assistant_client.dart';
 import 'package:inventory_assistant_flutter/base.dart';
 import 'package:inventory_assistant_flutter/main.dart';
 

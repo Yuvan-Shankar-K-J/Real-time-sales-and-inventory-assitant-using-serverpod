@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_assistant_client/inventory_assistant_client.dart';
 import 'package:inventory_assistant_flutter/base.dart';
-
+import 'package:inventory_assistant_flutter/main.dart';
+import 'package:inventory_assistant_flutter/Models/snackbar.dart';
 class PartyMaster extends StatefulWidget {
   const PartyMaster({super.key});
 
@@ -9,7 +11,50 @@ class PartyMaster extends StatefulWidget {
 }
 
 class _PartyMasterState extends State<PartyMaster> {
+  String? _resultMessage;
+  String? _errorMessage;
   bool showForm = false;
+  // Controllers for each text field
+  final _partyNameController = TextEditingController();
+  final _gstinController = TextEditingController();
+  final _teleNumbercontrollerController = TextEditingController();
+  final _mobileNumberController = TextEditingController();
+  final _addressController = TextEditingController();
+
+  void _displayStatus() async {
+    final result = await client.example.hello(_partyNameController.text);
+    try {
+      setState(() {
+        _errorMessage = null;
+        _resultMessage = result;
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = '$e';
+        _resultMessage = result;
+      });
+    }
+  }
+
+  Future <bool> addParty() async {
+    var party = Parties(
+      partyName: _partyNameController.text,
+      gstin: _gstinController.text,
+      mobileNumber: _mobileNumberController.text,
+      telephoneNumber: _teleNumbercontrollerController.text,
+      address: _addressController.text,
+    );
+
+    try {
+      bool? isAdded = await client.party.addParty(party); // Ensure nullable check
+      return isAdded;
+
+    }catch(e){
+      print(e.toString());
+      return false ;
+    }
+    }
+
   @override
   Widget build(BuildContext context) {
     return BaseScreen(
@@ -66,7 +111,35 @@ class _PartyMasterState extends State<PartyMaster> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              foregroundColor: Colors.black,
+                              elevation: 5,
+                              minimumSize: const Size(double.infinity, 45),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.zero,
+                              ),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                showForm =
+                                    false; // Hide form, show search section again
+                              });
+                            },
+                            icon: Icon(Icons.arrow_back, size: 24), // Back icon
+                            label: const Text("Back to Search"),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10,),
                     TextField(
+                      controller: _partyNameController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Party Name',
@@ -74,6 +147,7 @@ class _PartyMasterState extends State<PartyMaster> {
                     ),
                     const SizedBox(height: 10),
                     TextField(
+                      controller: _gstinController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'GSTIN',
@@ -81,6 +155,7 @@ class _PartyMasterState extends State<PartyMaster> {
                     ),
                     const SizedBox(height: 10),
                     TextField(
+                      controller: _teleNumbercontrollerController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Telephone Number',
@@ -88,6 +163,7 @@ class _PartyMasterState extends State<PartyMaster> {
                     ),
                     const SizedBox(height: 10),
                     TextField(
+                      controller: _mobileNumberController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Mobile Number',
@@ -95,6 +171,7 @@ class _PartyMasterState extends State<PartyMaster> {
                     ),
                     const SizedBox(height: 10),
                     TextField(
+                      controller: _addressController,
                       maxLines: 3,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
@@ -102,10 +179,11 @@ class _PartyMasterState extends State<PartyMaster> {
                         hintText: "Enter Party Address here",
                       ),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Row(
                       children: [
-
                         Expanded(
                           flex: 2,
                           child: ElevatedButton.icon(
@@ -120,15 +198,16 @@ class _PartyMasterState extends State<PartyMaster> {
                             ),
                             onPressed: () {
                               setState(() {
-                                showForm =
-                                    false; // Hide form, show search section again
+                                 // Hide form, show search section again
                               });
                             },
                             icon: Icon(Icons.clear_all, size: 24), // Back icon
                             label: const Text("Clear all"),
                           ),
                         ),
-                        SizedBox(width: 5,),
+                        SizedBox(
+                          width: 5,
+                        ),
                         Expanded(
                           flex: 2,
                           child: ElevatedButton.icon(
@@ -141,13 +220,19 @@ class _PartyMasterState extends State<PartyMaster> {
                                 borderRadius: BorderRadius.zero,
                               ),
                             ),
-                            onPressed: () {
-                              setState(() {
-                                 // Hide form, show search section again
-                              });
+                            onPressed: () async {
+                              bool isAdded = await addParty();
+                              Snackbar.show(
+                                  context,
+                                  isAdded,
+                                  isAdded
+                                      ? 'Party ${_partyNameController.text} added Successfully'
+                                      :'failed to add ${_partyNameController.text}'
+                              );
                             },
                             icon: Icon(Icons.check, size: 24), // Back icon
                             label: const Text("Save data"),
+
                           ),
                         )
                       ],
